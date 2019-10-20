@@ -224,7 +224,7 @@ class CalendarView extends React.Component {
                         console.log("date2" + date2);
                         console.log(range[1].date);
                         console.log("a " + a);
-                        colorLocal[1][range[1].date] = "#8B0000";
+                        colorLocal[1][range[1].date] = "#232d8b";
                     }
                     let colorCopy = this.state.color;
                     colorCopy[0].array = colorLocal[0];
