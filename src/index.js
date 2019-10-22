@@ -23,6 +23,7 @@ class CalendarView extends React.Component {
         //this.daysCount=new Date(this.currentYear, this.currentMonth, 0).getDate();
         console.log("dayCount" + this.daysCount);
         console.log("------------------------------------");
+        this.stateHistory=[];
         this.state = {
             color: [{
                 array: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("white"),
@@ -34,20 +35,46 @@ class CalendarView extends React.Component {
                     month: this.dateArray[1].getMonth(),
                     colorText: Array(daysInMonth(this.dateArray[1].getMonth() + 1, this.dateArray[1].getFullYear())).fill("black")
                 }],
+            previousButton:true,
         };
         this.dateRange = [];
         this.dateRangeHover = [];
         console.log(this.state.color);
     }
-
-    changeCurrentDate() {
+    changeCurrentDateBackward(){
+        let dates = this.dateArray.slice();
+        for (let i = 0; i < dates.length; i++) {
+            dates[i].setMonth(this.dateArray[i].getMonth() -1);
+        }
+        this.dateArray = dates;
+        console.log(this.dateArray);
+        //DELETE IF WORKS
+        /* let color = [{
+             array: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("white"),
+             month: this.dateArray[0].getMonth(),
+             colorText: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("black"),
+         }
+             , {
+                 array: Array(daysInMonth(this.dateArray[1].getMonth() + 1, this.dateArray[1].getFullYear())).fill("white"),
+                 month: this.dateArray[1].getMonth(),
+                 colorText: Array(daysInMonth(this.dateArray[1].getMonth() + 1, this.dateArray[1].getFullYear())).fill("black")
+             }];*/
+        let color=[this.IsSimilarMonth(this.dateArray[0]),this.IsSimilarMonth(this.dateArray[1])];
+        console.log(color);
+        this.setState({color: []});
+        this.setState({color: color});
+        setTimeout(() => console.log(this.state.color), 10000);
+    }
+    changeCurrentDateForward() {
+        let currentDate=new Date();
         let dates = this.dateArray.slice();
         for (let i = 0; i < dates.length; i++) {
             dates[i].setMonth(this.dateArray[i].getMonth() + 1);
         }
         this.dateArray = dates;
         console.log(this.dateArray);
-        let color = [{
+        //DELETE IF WORKS
+       /* let color = [{
             array: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("white"),
             month: this.dateArray[0].getMonth(),
             colorText: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("black"),
@@ -56,11 +83,37 @@ class CalendarView extends React.Component {
                 array: Array(daysInMonth(this.dateArray[1].getMonth() + 1, this.dateArray[1].getFullYear())).fill("white"),
                 month: this.dateArray[1].getMonth(),
                 colorText: Array(daysInMonth(this.dateArray[1].getMonth() + 1, this.dateArray[1].getFullYear())).fill("black")
-            }];
+            }];*/
+       //isSimilarMonth also changes previous button state
+       let color=[this.IsSimilarMonth(this.dateArray[0]),this.IsSimilarMonth(this.dateArray[1])];
         console.log(color);
         this.setState({color: []});
         this.setState({color: color});
+        this.setState({previousButton:false});
         setTimeout(() => console.log(this.state.color), 10000);
+    }
+    IsSimilarMonth(date){
+        let currentDate=new Date();
+        for(let i=0;i<this.stateHistory.length;i++){
+            if(this.stateHistory[i].month===date.getMonth()){
+                var SavedState={
+                   array:this.stateHistory[i].array,
+                   month:date.getMonth(),
+                   colorText:this.stateHistory[i].colorText,
+                };
+            }
+        }
+        let finalState=SavedState||{
+            array: Array(daysInMonth( date.getMonth()+ 1, date.getFullYear())).fill("white"),
+            month: date.getMonth(),
+            colorText: Array(daysInMonth(date.getMonth() + 1, date.getFullYear())).fill("black"),
+        };
+        console.log("ISSIMILARMONTH");
+        console.log(finalState);
+        if(currentDate.getMonth()===date.getMonth()){
+            this.setState({previousButton:true});
+        }
+        return finalState;
     }
 
     static setCurrentDate() {
@@ -192,6 +245,7 @@ class CalendarView extends React.Component {
             this.setState({
                 color: colorCopy,
             });
+            this.stateHistory=colorCopy.slice();
             console.log(this.state.color);
         }
         if (range[0].month.getMonth() !== range[1].month.getMonth()) {
@@ -244,15 +298,19 @@ class CalendarView extends React.Component {
     render() {
         console.log("CalendarRender");
         console.log(this.dateArray);
+        let options={month:'long',};
         return (
             <div>
-                <button onClick={() => this.changeCurrentDate()}>Next</button>
+                <button onClick={()=>this.changeCurrentDateBackward()} disabled={this.state.previousButton}>Previous</button>
+                <button onClick={() => this.changeCurrentDateForward()}>Next</button>
+              <div className={"Calendar"}>  <div>{this.dateArray[0].toLocaleString('default', options)}</div>
                 <Calendar color={this.state.color[0]} date={this.dateArray[0]}
                           getIDClick={(i, j) => this.getIDClick(i, j)}
-                          getIDMouseEnter={(i, j) => this.getIDMouseEnter(i, j)}/>
+                          getIDMouseEnter={(i, j) => this.getIDMouseEnter(i, j)}/></div>
+                <div className={"Calendar"}><div>{this.dateArray[1].toLocaleString('default', options)}</div>
                 <Calendar color={this.state.color[1]} date={this.dateArray[1]}
                           getIDClick={(i, j) => this.getIDClick(i, j)}
-                          getIDMouseEnter={(i, j) => this.getIDMouseEnter(i, j)}/>
+                          getIDMouseEnter={(i, j) => this.getIDMouseEnter(i, j)}/></div>
             </div>
         )
     }
@@ -263,7 +321,7 @@ class Calendar extends React.Component {
     constructor(props) {
         //constructor is not running when redeclaring props
         super(props);
-        this.currentDate = this.props.date;
+        /*this.currentDate = this.props.date;
         console.log("CALENDARCONSTRUCTOR");
         console.log(this.currentDate);
         this.currentDay = this.currentDate.getDate();
@@ -276,7 +334,7 @@ class Calendar extends React.Component {
         //should be change for ur dates
         this.firstDate = firstDay(this.currentMonth, this.currentYear);
         this.dateRange = [];
-        this.dateRangeHover = [];
+        this.dateRangeHover = [];*/
     }
 
     toggleHighLightPeriod() {
@@ -284,8 +342,27 @@ class Calendar extends React.Component {
             color: Array(this.daysCount).fill("white"),
         })
     }
+    isWekeend(year,month,day){
+        let date=new Date(year,month,day);
+        let weekDay=date.getDay();
+        let isweekend=(weekDay===5)||(weekDay===6);
+
+        return isweekend;
+    }
 
     renderDay() {
+        this.currentDate = this.props.date;
+        console.log("CALENDARCONSTRUCTOR");
+        console.log(this.currentDate);
+        this.currentDay = this.currentDate.getDate();
+        this.currentMonth = this.currentDate.getMonth();
+        this.currentYear = this.currentDate.getFullYear();
+        this.getIDClick = this.props.getIDClick;
+        this.getIDMouseEnter = this.props.getIDMouseEnter;
+        //should be change for ur dates
+        this.daysCount = daysInMonth(this.currentMonth + 1, this.currentYear);
+        //should be change for ur dates
+        this.firstDate = firstDay(this.currentMonth, this.currentYear);
         const calendar = [];
         console.log("renderDay");
         console.log(this.currentMonth);
@@ -297,7 +374,16 @@ class Calendar extends React.Component {
             pastDate++;
         }
         for (let j = 0; j < (this.daysCount); j++) {
-            calendar.push(<Day day={j} color={this.props.color.array[j]} textColor={this.props.color.colorText[j]}
+            let textColor;
+            let weekend=this.isWekeend(this.currentYear,this.currentMonth,j);
+            if((weekend===true)&&(this.props.color.array[j]==="white")){
+                textColor="red";
+                console.log("It's a weekend");
+            }
+            else{
+                textColor=this.props.color.colorText[j];
+            }
+            calendar.push(<Day day={j} color={this.props.color.array[j]} textColor={textColor}
                                onclk={() => this.getIDClick(j, this.currentDate)}
                                onenter={() => this.getIDMouseEnter(j, this.currentDate)}/>);
         }
@@ -305,7 +391,6 @@ class Calendar extends React.Component {
     }
 
     render() {
-        console.log("calendar");
         return (
             <div>
                 {this.renderDay()}
@@ -317,11 +402,13 @@ class Calendar extends React.Component {
 class Day extends React.Component {
     constructor(props) {
         super(props);
-        this.date = (props.day + 1) || 3;
-        this.price = 4;
+        /*this.date = (props.day + 1) || 3;
+        this.price = 4;*/
     }
 
     render() {
+        this.date = (this.props.day + 1) || 3;
+        this.price = 4;
         console.log("Day");
         console.log(this.date);
         return (
