@@ -10,7 +10,8 @@ class App extends React.Component{
 
   }
   getDate(dateArray){
-
+console.log("getDate");
+console.log(dateArray);
     this.departureDate={
       day:dateArray[0].date+1,
       month:dateArray[0].month.getMonth()+1,
@@ -43,8 +44,8 @@ function emitSearch(origin,destination,departureDate) {
   xhr.open('GET', '/scripts?origin='+origin+'&destination='+destination+'&departureDate='+departureDate.toString());
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.onload = function() {
-    console.log("-------------RESPOND--------------")
-    console.log(xhr.responseText);
+  //  console.log("-------------RESPOND--------------")
+  //  console.log(xhr.responseText);
     alert("check!");
   };
   xhr.send()

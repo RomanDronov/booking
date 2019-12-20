@@ -18,8 +18,8 @@ class CalendarView extends React.Component {
         // this.currentYear = this.today.getFullYear();
         //this.daysCount = daysInMonth(this.currentMonth + 1, this.currentYear);
         //this.daysCount=new Date(this.currentYear, this.currentMonth, 0).getDate();
-        console.log("dayCount" + this.daysCount);
-        console.log("------------------------------------");
+      //  console.log("dayCount" + this.daysCount);
+     //   console.log("------------------------------------");
         this.stateHistory=[];
         this.state = {
             color: [{
@@ -36,7 +36,7 @@ class CalendarView extends React.Component {
         };
         this.dateRange = [];
         this.dateRangeHover = [];
-        console.log(this.state.color);
+     //   console.log(this.state.color);
     }
     changeCurrentDateBackward(){
         let dates = this.dateArray.slice();
@@ -44,7 +44,7 @@ class CalendarView extends React.Component {
             dates[i].setMonth(this.dateArray[i].getMonth() -1);
         }
         this.dateArray = dates;
-        console.log(this.dateArray);
+      //  console.log(this.dateArray);
         //DELETE IF WORKS
         /* let color = [{
              array: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("white"),
@@ -57,7 +57,7 @@ class CalendarView extends React.Component {
                  colorText: Array(daysInMonth(this.dateArray[1].getMonth() + 1, this.dateArray[1].getFullYear())).fill("black")
              }];*/
         let color=[this.IsSimilarMonth(this.dateArray[0]),this.IsSimilarMonth(this.dateArray[1])];
-        console.log(color);
+     //   console.log(color);
         this.setState({color: []});
         this.setState({color: color});
         setTimeout(() => console.log(this.state.color), 10000);
@@ -69,7 +69,7 @@ class CalendarView extends React.Component {
             dates[i].setMonth(this.dateArray[i].getMonth() + 1);
         }
         this.dateArray = dates;
-        console.log(this.dateArray);
+      //  console.log(this.dateArray);
         //DELETE IF WORKS
         /* let color = [{
              array: Array(daysInMonth(this.dateArray[0].getMonth() + 1, this.dateArray[0].getFullYear())).fill("white"),
@@ -83,7 +83,7 @@ class CalendarView extends React.Component {
              }];*/
         //isSimilarMonth also changes previous button state
         let color=[this.IsSimilarMonth(this.dateArray[0]),this.IsSimilarMonth(this.dateArray[1])];
-        console.log(color);
+      //  console.log(color);
         this.setState({color: []});
         this.setState({color: color});
         this.setState({previousButton:false});
@@ -105,8 +105,8 @@ class CalendarView extends React.Component {
             month: date.getMonth(),
             colorText: Array(daysInMonth(date.getMonth() + 1, date.getFullYear())).fill("black"),
         };
-        console.log("ISSIMILARMONTH");
-        console.log(finalState);
+     //   console.log("ISSIMILARMONTH");
+    //    console.log(finalState);
         if(currentDate.getMonth()===date.getMonth()){
             this.setState({previousButton:true});
         }
@@ -114,11 +114,11 @@ class CalendarView extends React.Component {
     }
 
     static setCurrentDate() {
-        console.log("setCurrentDate");
+     //   console.log("setCurrentDate");
         let dates = [];
         let date = new Date();
         dates.push(new Date());
-        console.log(dates[0]);
+    //    console.log(dates[0]);
         let date2 = new Date();
         date2.setMonth(date.getMonth() + 1);
         dates.push(date2);
@@ -133,23 +133,22 @@ class CalendarView extends React.Component {
         this.month = j.getMonth();
         this.year=j.getFullYear();
         console.log("i");
-        console.log(i);
-        console.log("j");
-        console.log(j);
+      console.log(i);
+      console.log("j");
+      console.log(j);
         this.dateRange.push({date: i, month: j,});
         this.dateRangeHover.push({date: i, month: j,});
-        console.log(this.dateRange);
+        console.log("daterange");
+      console.log(this.dateRange);
+      console.log(this.dateRangeHover);
         let rangeLength = 0;
         // for (let key in this.dateRange) {
         //     rangeLength++;
         // }
         rangeLength += this.dateRange.length;
-        console.log("rangeLength " + rangeLength);
         for (let a = 0; a < this.state.color.length; a++) {
             if (this.month === this.state.color[a].month) {
                 if (rangeLength === 1) {
-
-                    console.log("---------init111111");
                     let colorCopy = this.state.color;
                     let textColorChange = Array(daysInMonth(this.dateArray[a + 1].getMonth() + 1, this.dateArray[a + 1].getFullYear())).fill("black");
                     textColorChange[i] = "white";
@@ -164,8 +163,6 @@ class CalendarView extends React.Component {
                         colorCopy[a - 1].array = Array(daysInMonth(this.dateArray[a].getMonth() + 1, this.dateArray[a].getFullYear())).fill("white");
                         colorCopy[a - 1].colorText = Array(daysInMonth(this.dateArray[a].getMonth() + 1, this.dateArray[a].getFullYear())).fill("black");
                     }
-                    console.log("colorCopy");
-                    console.log(colorCopy);
                     this.setState({
                         color: colorCopy,
                     })
@@ -173,19 +170,19 @@ class CalendarView extends React.Component {
                 }
 
                 if (rangeLength === 2) {
-                    console.log("---------init");
-                    console.log(this.month);
+                   console.log("rangeLenght 2");
+                   console.log(this.dateRange);
                     let textColorChange = this.state.color[a].colorText.slice();
-                    console.log(textColorChange);
+                  //  console.log(textColorChange);
                     textColorChange[i] = "white";
-                    console.log(textColorChange);
-                    console.log("longdateRange " + this.dateRange.length);
+                 //   console.log(textColorChange);
+                //    console.log("longdateRange " + this.dateRange.length);
                     let colorCopy = this.state.color;
                     colorCopy[a].colorText = textColorChange;
                     this.setState({
                         color: colorCopy,
                     });
-                    console.log(this.state.color);
+                //    console.log(this.state.color);
                     this.highlightPeriod(this.dateRange, true);
                     this.getDate(this.dateRange);
                     this.dateRange = [];
@@ -199,22 +196,26 @@ class CalendarView extends React.Component {
 
     getIDMouseEnter(i, j) {
         if (this.dateRange.length === 1) {
-            console.log("MOUSEENTER");
+         //   console.log("MOUSEENTER");
             this.dateRange[1] = {date: i, month: j};
             this.highlightPeriod(this.dateRange);
             this.dateRange = this.dateRange.splice(0, 1);
 
-            console.log("array size " + this.dateRange.length);
-            console.log(this.dateRange[0]);
+         //   console.log("array size " + this.dateRange.length);
+         //   console.log(this.dateRange[0]);
         }
     }
 
     //dateRange.push({date:x,month:Date})
     highlightPeriod(range, date2) {
-        console.log(range);
+       console.log("hightlightPeriod");
+       console.log(range);
+       console.log(this.dateRange);
+       console.log("daterangeHOVER");
+       console.log(this.dateRangeHover);
         let colorCopy = this.state.color;
-        console.log("HP");
-        console.log(range[0].date);
+       // console.log("HP");
+       // console.log(range[0].date);
         if (range[0].month.getMonth() === range[1].month.getMonth()) {
             let colorLocal = Array(daysInMonth(range[0].month.getMonth() + 1, range[0].month.getFullYear())).fill("white");
             colorLocal[range[0].date] = "#8B0000";
@@ -222,14 +223,14 @@ class CalendarView extends React.Component {
                 colorLocal[i] = "#ededed";
             }
             if (date2 === true) {
-                console.log("if2");
-                console.log(range[1].date);
+               // console.log("if2");
+               // console.log(range[1].date);
                 colorLocal[range[1].date] = "#8B0000";
             }
             for (let a = 0; a < this.state.color.length; a++) {
                 if (range[0].month.getMonth() === this.state.color[a].month) {
-                    console.log("a " + a);
-                    console.log(colorCopy);
+                 //   console.log("a " + a);
+                //    console.log(colorCopy);
                     colorCopy[a].array = colorLocal;
                     if (a === 0) {
                         colorCopy[a + 1].array = Array(daysInMonth(range[a + 1].month.getMonth() + 1, range[a + 1].month.getFullYear())).fill("white");
@@ -239,16 +240,16 @@ class CalendarView extends React.Component {
                     }
                 }
             }
-            console.log("colorLocal");
-            console.log(colorCopy);
+          //  console.log("colorLocal");
+          //  console.log(colorCopy);
             this.setState({
                 color: colorCopy,
             });
             this.stateHistory=colorCopy.slice();
-            console.log(this.state.color);
+         //   console.log(this.state.color);
         }
         if (range[0].month.getMonth() !== range[1].month.getMonth()) {
-            console.log("---------2!=");
+        //    console.log("---------2!=");
             let colorLocal = [];
             colorLocal.push(Array(daysInMonth(range[0].month.getMonth() + 1, range[0].month.getFullYear())).fill("white"));
             colorLocal.push(Array(daysInMonth(range[1].month.getMonth() + 1, range[1].month.getFullYear())).fill("white"));
@@ -257,26 +258,26 @@ class CalendarView extends React.Component {
                     if (a === 0) {
                         colorLocal[a][range[a].date] = "#8B0000";
                         for (let i = range[a].date + 1; i <= daysInMonth(range[a].month.getMonth() + 1, range[a].month.getFullYear()); i++) {
-                            console.log(colorLocal[a].length);
-                            console.log("--------1");
+                          //  console.log(colorLocal[a].length);
+                         //   console.log("--------1");
                             colorLocal[a][i] = "#ededed";
                         }
-                        console.log("colorLocal if1-0");
-                        console.log(colorLocal);
+                    //    console.log("colorLocal if1-0");
+                    //    console.log(colorLocal);
                     }
                     if (a === 1) {
                         for (let i = 0; i <= range[a].date; i++) {
-                            console.log("--------2");
+                        //    console.log("--------2");
                             colorLocal[a][i] = "#ededed";
                         }
-                        console.log("colorLocal if1-1");
-                        console.log(colorLocal);
+                     //   console.log("colorLocal if1-1");
+                      //  console.log(colorLocal);
                     }
                     if (date2 === true) {
-                        console.log("if2-2");
-                        console.log("date2" + date2);
-                        console.log(range[1].date);
-                        console.log("a " + a);
+                      //  console.log("if2-2");
+                      //  console.log("date2" + date2);
+                      //  console.log(range[1].date);
+                      //  console.log("a " + a);
                         colorLocal[1][range[1].date] = "#8B0000";
                     }
                     let colorCopy = this.state.color;
@@ -287,7 +288,7 @@ class CalendarView extends React.Component {
                     });
 
                 }
-                console.log(colorLocal);
+            //    console.log(colorLocal);
             }
         }
 
@@ -295,8 +296,8 @@ class CalendarView extends React.Component {
     }
 
     render() {
-        console.log("CalendarRender");
-        console.log(this.dateArray);
+      //  console.log("CalendarRender");
+      //  console.log(this.dateArray);
         let options={month:'long',};
         return (
             <div>
@@ -351,8 +352,8 @@ class Calendar extends React.Component {
 
     renderDay() {
         this.currentDate = this.props.date;
-        console.log("CALENDARCONSTRUCTOR");
-        console.log(this.currentDate);
+    //    console.log("CALENDARCONSTRUCTOR");
+   //     console.log(this.currentDate);
         this.currentDay = this.currentDate.getDate();
         this.currentMonth = this.currentDate.getMonth();
         this.currentYear = this.currentDate.getFullYear();
@@ -363,13 +364,13 @@ class Calendar extends React.Component {
         //should be change for ur dates
         this.firstDate = firstDay(this.currentMonth, this.currentYear);
         const calendar = [];
-        console.log("renderDay");
-        console.log(this.currentMonth);
+     //   console.log("renderDay");
+       // console.log(this.currentMonth);
         //should be change for ur dates
         let pastDate = new Date(this.currentYear, this.currentMonth, 0).getDate() - this.firstDate;
         for (let i = 0; i < this.firstDate; i++) {
             calendar.push(<Day day={pastDate}/>);
-            console.log(pastDate);
+         //   console.log(pastDate);
             pastDate++;
         }
         for (let j = 0; j < (this.daysCount); j++) {
@@ -377,7 +378,7 @@ class Calendar extends React.Component {
             let weekend=this.isWekeend(this.currentYear,this.currentMonth,j);
             if((weekend===true)&&(this.props.color.array[j]==="white")){
                 textColor="red";
-                console.log("It's a weekend");
+              //  console.log("It's a weekend");
             }
             else{
                 textColor=this.props.color.colorText[j];
@@ -408,8 +409,8 @@ class Day extends React.Component {
     render() {
         this.date = (this.props.day + 1) || 3;
         this.price = 4;
-        console.log("Day");
-        console.log(this.date);
+        //console.log("Day");
+       // console.log(this.date);
         return (
             <button onClick={this.props.onclk} id={this.date}
                     style={{backgroundColor: this.props.color, color: this.props.textColor}}
