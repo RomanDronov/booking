@@ -61,7 +61,7 @@ searchButtonClicked(){
   let originValue=document.getElementById("origin").value;
   let destinationValue=document.getElementById("destination").value;
   // emitSearch(originValue,destinationValue,this.departureDate);
-  openSearch(originValue,destinationValue,this.departureDate,this.returnDate);
+  //openSearch(originValue,destinationValue,this.departureDate,this.returnDate);
 
 }
   setOrigin(iata){
