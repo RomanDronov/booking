@@ -17,51 +17,14 @@ this.getCity(e.target.value);
   }
   getCity(letters) {
 this.getRequest(letters).then(response=>{
-//let array=response.slice(0,10);
 this.setState({cities:response})
 });
-
   }
-  async getRequest(letters){
+ async getRequest(letters){
     try {
-      // const json = await this.getRequestData('/scripts?origin='+origin+'&destination='+destination+'&departureDate='+departureDate);
-      //const json = await this.getRequestData(urlGET);
-      const json=await this.getRequestData('airports.json');
-      console.log("json");
-      console.log(json.length);
-      console.log("-----------------");
-      let searchResults=[];
-      for(let i in json){
-        let lnt=letters.length;
-        let objTmp={};
-        let jsonCityStr=json[i].city.slice(0,lnt);
-        let jsonIATAStr;
-        let jsonAirportStr=json[i].name.slice(0,lnt);
-        if(json[i].iata!=null) {
-         jsonIATAStr = json[i].iata.slice(0, lnt);
-        }
-        if(letters===jsonCityStr||letters===jsonIATAStr||letters===jsonAirportStr){
-          if(json[i].iata!="") {
-            objTmp.name=json[i].name;
-           objTmp.city=json[i].city;
-            objTmp.iata=json[i].iata;
-            searchResults.push(objTmp);
-          }
-        }
-
-      }
-
-      console.log("-----------------");
-      if("errors" in json){
-        //this.setState({error:true});
-        console.log("errorSet");
-      }
-      else {
-       // console.log("dataSet");
-       // this.setState({data: true});
-      }
+      const json = await this.getRequestData('/scripts/airports?str='+letters);
       this.setState({isAutofillVisible:true});
-      return searchResults;
+      return json;
     } catch (error) {
       console.error(error);
     }
